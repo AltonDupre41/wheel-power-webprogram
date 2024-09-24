@@ -4,3 +4,6 @@
 ##Project Members
 Alton Dupre
 Ethan Judice
+Anthony Marino
+Alex Marin
+Nene Fall
