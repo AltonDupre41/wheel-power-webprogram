@@ -1,0 +1,10 @@
+button {
+    font-size: 32px;
+    font-family: "Open Sans", sans-serif;
+    text-align: center;
+    transition-duration: 0.4;
+}
+
+button:hover{
+background: green;
+}
