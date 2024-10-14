@@ -45,6 +45,15 @@ button:hover {
     z-index: 1000;
 }
 
+.durability-bar {
+    position: bottom;
+    height: 15px;
+    background-color: #4CAF50;
+    width: 20;
+    transition: width 0.3s ease;
+    z-index: 1000;
+}
+
 p {
     font-size: 18px;
     margin-top: 10px;
