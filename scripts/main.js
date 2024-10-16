@@ -3,7 +3,7 @@ const progressBar = document.getElementById('progress-bar');
 const durabilityBar = document.getElementById('durability-bar');
 const clickCountDisplay = document.getElementById('click-count');
 const autoClickCountDisplay = document.getElementById('auto-click-count');
-const repairButton = document.getElementById('repair-btn');
+const popupDialog = document.getElementById("popupDialog");
 
 let autoClickActive = false
 let autoClickBroken = false
@@ -91,3 +91,11 @@ setInterval(() => {
     autoClickCountDisplay.textContent = autoClickCount;
     updateProgress();
 }, 2000); //auto click every X000 (every 1000 is 1 sec)
+
+function openPopup() {
+    popupDialog.style.visibility = popupDialog.style.visibility === "visible" ? "hidden" : "visible";
+}
+
+function closePopup() {
+    popupDialog.style.visibility = popupDialog.style.visibility === "visible" ? "hidden" : "visible";
+}
