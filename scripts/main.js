@@ -3,6 +3,7 @@ const progressBar = document.getElementById('progress-bar');
 const durabilityBar = document.getElementById('durability-bar');
 const clickCountDisplay = document.getElementById('click-count');
 const autoClickCountDisplay = document.getElementById('auto-click-count');
+const repairButton = document.getElementById('repair-btn');
 
 let autoClickActive = false
 let autoClickBroken = false
