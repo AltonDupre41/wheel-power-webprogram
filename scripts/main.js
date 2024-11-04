@@ -1,9 +1,10 @@
 const clickButton = document.getElementById('click-btn');
 const progressBar = document.getElementById('progress-bar');
-const durabilityBar = document.getElementById('durability-bar');
+const durabilityBar = document.getElementById('durability1');
 const clickCountDisplay = document.getElementById('click-count');
 const autoClickCountDisplay = document.getElementById('auto-click-count');
 const popupDialog = document.getElementById("popupDialog");
+const curLevel = document.getElementById("current-level");
 
 let autoClickActive = false
 let autoClickBroken = false
@@ -12,7 +13,31 @@ let autoClickMaxDurability = 10
 
 let clickCount = 0;
 let autoClickCount = 0;
-let maxClicks = 100;
+let maxClicks = 10;
+
+
+//Database for AutoClickers
+//keyvalue pair where the key is the name of the autoclicker and the value includes data about the autoclicker
+//TODO: Convert code to work with this data
+let AutoClickDATA = {
+
+};
+
+
+//Levels in the program work with a key:value pair
+//keys dignify how far the player has progressed(how many times the progression bar is filled)
+//values are what elements are enabled when the player reaches that level and the max power needed for the next level
+let levels = {
+    1:{
+        "elements":".level1",
+        "maxVal":100,
+    },
+
+    2:{"elements":".level2",
+        "maxVal":200,
+    }
+};
+let level = 0;
 
 
 function updateProgress() {
@@ -31,15 +56,37 @@ function updateProgress() {
     //reset progress bar after it fills
     if (totalClicks >= maxClicks) {
         setTimeout(() => {
-            alert("You have max power!");
+
+            level++;
+            levelUp();
+
             clickCount = 0;
             autoClickCount = 0;
             progressBar.style.width = '0%';
             progressBar.style.backgroundColor = 'rgb(255, 0, 0)';
             clickCountDisplay.textContent = clickCount;
             autoClickCountDisplay.textContent = autoClickCount;
+            //updateProgress();
+
         }, 500);
     }
+}
+
+function levelUp() {
+    if (!(levels[level])){return;}
+    let nodeList = document.querySelectorAll(levels[level]["elements"]);
+    let i;
+    for (i = 0; (nodeList.length != 0 && i != nodeList.length); i++){
+        nodeList[i].removeAttribute("hidden");
+
+        //Temp code before I add code for making multiple autoclickers active
+        if(nodeList[i].classList.contains("Auto1")){
+            autoClickActive = true;
+        }
+
+    }
+    curLevel.textContent = "Level " + level;
+    maxClicks = levels[level]["maxVal"]
 }
 
 function updateDurability(){
@@ -57,7 +104,6 @@ function updateDurability(){
 
 //manual click function
 clickButton.addEventListener('click', () => {
-    if (!autoClickActive){autoClickActive = true;}
     clickCount++;
     clickCountDisplay.textContent = clickCount;
     updateProgress();

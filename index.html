@@ -11,8 +11,8 @@
         <h1>Wheel Power</h1>
         <button id="click-btn">Click Me!</button>
         <p>Manual Clicks: <span id="click-count">0</span></p>
-        <p>Auto Clicks: <span id="auto-click-count">0</span></p>
-        <div class="durability-bar" id="durability-bar"></div>
+        <p hidden class="level1 Auto1">Auto Clicks: <span id="auto-click-count">0</span></p>
+        <div hidden class="level1 durability1" id="durability1"></div>
     </div>
 
     <div class="repair-popup">
@@ -22,6 +22,8 @@
             <button onclick="closePopup()">Close</button>
         </div>
     </div>
+
+    <p hidden class="level1" id="current-level">Level</p>
 
     <div class="progress-bar" id="progress-bar"></div>
 
