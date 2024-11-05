@@ -1,10 +1,10 @@
 const clickButton = document.getElementById('click-btn');
 const progressBar = document.getElementById('progress-bar');
-const durabilityBar = document.getElementById('durability1');
 const clickCountDisplay = document.getElementById('click-count');
 const autoClickCountDisplay = document.getElementById('auto-click-count');
 const popupDialog = document.getElementById("popupDialog");
 const curLevel = document.getElementById("current-level");
+const manualContainer = document.getElementById("Manual-Click");
 
 let autoClickActive = false
 let autoClickBroken = false
@@ -15,12 +15,37 @@ let clickCount = 0;
 let autoClickCount = 0;
 let maxClicks = 10;
 
+let pauseUpdate = false;
+
 
 //Database for AutoClickers
-//keyvalue pair where the key is the name of the autoclicker and the value includes data about the autoclicker
+//keyvalue pair where the key is the class of the autoclicker and the value includes data about the autoclicker
 //TODO: Convert code to work with this data
 let AutoClickDATA = {
-
+    "Auto1":{
+        "Active":false, //Determines if the AutoClicker is Active
+        "Broken":false, // If the autoclicker is broken
+        "Durability":10, // current durability
+        "MaxDurability":10, // max durability, used to apply to durability with the repair() function
+        "DurabilityBar":document.getElementById("durability1"), //the durability bar element
+        "AutoClickDisplay":document.getElementById("autocount1"), //the count display
+        "add":1, // How much the autoclicker adds
+        "clickCount":0, // how much the autoclicker has added
+        "update":1000, // time between autoclicks
+        "brokenUpdate":2000, //time between autoclicks when broken
+    },
+    "Auto2":{
+        "Active":false,
+        "Broken":false,
+        "Durability":10,
+        "MaxDurability":10,
+        "DurabilityBar":document.getElementById("durability2"),
+        "AutoClickDisplay":document.getElementById("autocount2"),
+        "add":2,
+        "clickCount":0,
+        "update":2000,
+        "brokenUpdate":4000,
+    }
 };
 
 
@@ -40,7 +65,8 @@ let levels = {
 let level = 0;
 
 
-function updateProgress() {
+function updateProgress() {    
+    if (pauseUpdate){return;}
     let totalClicks = clickCount + autoClickCount;
 
     //move progress bar
@@ -55,6 +81,7 @@ function updateProgress() {
 
     //reset progress bar after it fills
     if (totalClicks >= maxClicks) {
+        pauseUpdate = true;
         setTimeout(() => {
 
             level++;
@@ -65,8 +92,8 @@ function updateProgress() {
             progressBar.style.width = '0%';
             progressBar.style.backgroundColor = 'rgb(255, 0, 0)';
             clickCountDisplay.textContent = clickCount;
-            autoClickCountDisplay.textContent = autoClickCount;
-            //updateProgress();
+
+            pauseUpdate = false;
 
         }, 500);
     }
@@ -77,28 +104,31 @@ function levelUp() {
     let nodeList = document.querySelectorAll(levels[level]["elements"]);
     let i;
     for (i = 0; (nodeList.length != 0 && i != nodeList.length); i++){
+        let elementID = nodeList[i].id;
         nodeList[i].removeAttribute("hidden");
-
-        //Temp code before I add code for making multiple autoclickers active
-        if(nodeList[i].classList.contains("Auto1")){
-            autoClickActive = true;
+        
+        if(!nodeList[i].classList.contains("level-text")){
+            AutoClickDATA[elementID]["Active"] = true;
+            setTimeout(() => AutoClick(elementID), AutoClickDATA[elementID]["update"]);
         }
-
+        
     }
+    if (manualContainer.style.width != '50%'){manualContainer.style.width = '50%';}
     curLevel.textContent = "Level " + level;
     maxClicks = levels[level]["maxVal"]
 }
 
-function updateDurability(){
+function updateDurability(autoID){
+    let autoclicker = AutoClickDATA[autoID];
     //move progress bar
-    let durability = (autoClickDurability / autoClickMaxDurability) * 100;
+    let durability = (autoclicker["Durability"] / autoclicker["MaxDurability"]) * 100;
     if (durability > 100) durability = 100;
-    durabilityBar.style.width = (durability) + '%';
+    autoclicker["DurabilityBar"].style.width = (durability) + '%';
 
     //change progress bar colors
     const red = Math.min(durability * 2.55, 255);
     const green = Math.max(255 - (durability * 2.55), 0);
-    durabilityBar.style.backgroundColor = `rgb(${green}, ${red}, 0)`;
+    autoclicker["DurabilityBar"].style.backgroundColor = `rgb(${green}, ${red}, 0)`;
 
 }
 
@@ -109,34 +139,36 @@ clickButton.addEventListener('click', () => {
     updateProgress();
 });
 
-//autoclick function
-setInterval(() => {
-    if (!autoClickActive || autoClickBroken){return;} 
-    autoClickCount++;
-    autoClickCountDisplay.textContent = autoClickCount;
+//A frame where the game processes the AutoClickers
+function AutoClick(autoID){
+    let autoclicker = AutoClickDATA[autoID];
+    autoClickCount += autoclicker["add"];
+    autoclicker["clickCount"] += autoclicker["add"];
+    autoclicker["AutoClickDisplay"].textContent = autoclicker["clickCount"];
+
     updateProgress();
-    
-    if (autoClickDurability <= 0) {
-        autoClickBroken = true
-        updateDurability()
-        //TODO: add a repair button to repair the auto clicker, how its repaired could just be a simple, Press 4 buttons
+
+    if (autoclicker["Durability"] <= 0){autoclicker["Broken"] = true}
+
+    if (autoclicker["Broken"]){
+        setTimeout(() => AutoClick(autoID), autoclicker["brokenUpdate"]);
+        return;
     }
-    else {
-        autoClickDurability--;
-        updateDurability()
+
+    autoclicker["Durability"]--;
+    updateDurability(autoID);
+
+    if (autoclicker["Active"]){
+        setTimeout(() => AutoClick(autoID), autoclicker["update"]);
+        return;
     }
-    
+}
 
-}, 1000); //auto click every X000 (every 1000 is 1 sec)
-
-
-//autoclick function for when the autoclicker is broken
-setInterval(() => {
-    if (!autoClickActive || !autoClickBroken){return;} 
-    autoClickCount++;
-    autoClickCountDisplay.textContent = autoClickCount;
-    updateProgress();
-}, 2000); //auto click every X000 (every 1000 is 1 sec)
+function repair(autoID){
+    let autoclicker = AutoClickDATA[autoID];
+    autoclicker["Broken"] = false;
+    autoclicker["Durability"] = autoclicker["MaxDurability"];
+}
 
 function openPopup() {
     popupDialog.style.visibility = popupDialog.style.visibility === "visible" ? "hidden" : "visible";

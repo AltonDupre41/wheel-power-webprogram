@@ -7,23 +7,54 @@
     <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
+
     <div class="game-container">
-        <h1>Wheel Power</h1>
-        <button id="click-btn">Click Me!</button>
-        <p>Manual Clicks: <span id="click-count">0</span></p>
-        <p hidden class="level1 Auto1">Auto Clicks: <span id="auto-click-count">0</span></p>
-        <div hidden class="level1 durability1" id="durability1"></div>
-    </div>
-
-    <div class="repair-popup">
-        <button onclick="openPopup()">Repair</button>
-        <div id="popupDialog">
-            <p>Repair Button Info</p>
-            <button onclick="closePopup()">Close</button>
+        
+        <div class="Manual-Click" id="Manual-Click">
+            <h1>Wheel Power</h1>
+            <button id="click-btn">Click Me!</button>
+            <p>Manual Clicks: <span id="click-count">0</span></p>
         </div>
+
+        <div class="Auto-Clicks">
+
+            <div hidden class="Auto level1" id="Auto1">
+                <p class="Auto1">Auto Clicker 1</p>
+                <p  class="Auto1">Auto Clicks: <span id="autocount1">0</span></p>
+                <div class="Auto1 durability" id="durability1"></div>
+                
+                <div class="repair-popup Auto1">
+                    <button onclick="openPopup()">Repair</button>
+                    <div id="popupDialog">
+                        <p>Repair Button Info</p>
+                        <button onclick="closePopup()">Close</button>
+                    </div>
+                </div>
+            </div>
+    
+            <div hidden class="Auto level2" id="Auto2">
+                <p class="Auto2">Auto Clicker 2</p>
+                <p  class="Auto2 auto-clicker-count">Auto Clicks: <span id="autocount2">0</span></p>
+                <div class="Auto2 durability" id="durability2"></div>
+
+                <div class="repair-popup Auto2">
+                    <button onclick="openPopup()">Repair</button>
+                    <div id="popupDialog">
+                        <p>Repair Button Info</p>
+                        <button onclick="closePopup()">Close</button>
+                    </div>
+                </div>
+            </div>
+
+            
+
+        </div>
+
+        
+
     </div>
 
-    <p hidden class="level1" id="current-level">Level</p>
+    <p hidden class="level1 level-text" id="current-level">Level</p>
 
     <div class="progress-bar" id="progress-bar"></div>
 
