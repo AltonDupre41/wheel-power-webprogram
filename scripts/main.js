@@ -223,14 +223,17 @@ function repair(autoID){
     autoclicker["Durability"] = autoclicker["MaxDurability"];
 }
 
+//change repair button color from red to green with call so css pseduo function 'clicked'
 function repairButtonChangeColor(button){
     button.classList.toggle("clicked");
 }
 
+//opens repair popup
 function openRepairPopup() {
     popupDialog.style.visibility = popupDialog.style.visibility === "visible" ? "hidden" : "visible";
 }
 
+//closes repair popup
 function closeRepairPopup() {
     popupDialog.style.visibility = popupDialog.style.visibility === "visible" ? "hidden" : "visible";
 }
