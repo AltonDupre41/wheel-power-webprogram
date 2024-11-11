@@ -223,11 +223,15 @@ function repair(autoID){
     autoclicker["Durability"] = autoclicker["MaxDurability"];
 }
 
-function openPopup() {
+function repairButtonChangeColor(button){
+    button.classList.toggle("clicked");
+}
+
+function openRepairPopup() {
     popupDialog.style.visibility = popupDialog.style.visibility === "visible" ? "hidden" : "visible";
 }
 
-function closePopup() {
+function closeRepairPopup() {
     popupDialog.style.visibility = popupDialog.style.visibility === "visible" ? "hidden" : "visible";
 }
 

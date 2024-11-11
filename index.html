@@ -32,10 +32,16 @@
                 <div class="Auto1 durability" id="durability1"></div>
                 
                 <div class="repair-popup Auto1">
-                    <button onclick="openPopup()">Repair</button>
+                    <button onclick="openRepairPopup()">Repair</button>
                     <div id="popupDialog">
-                        <p>Repair Button Info</p>
-                        <button onclick="closePopup()">Close</button>
+                        <p>Click each Button to Green to Repair Auto Clicker!</p>
+                            <div class="repair-btns">
+                                <button class="repair-btn-change" onclick="repairButtonChangeColor(this)">btn1</button>
+                                <button class="repair-btn-change" onclick="repairButtonChangeColor(this)">btn2</button>
+                                <button class="repair-btn-change" onclick="repairButtonChangeColor(this)">btn3</button>
+                                <button class="repair-btn-change" onclick="repairButtonChangeColor(this)">btn4</button>
+                            </div>
+                        <button onclick="closeRepairPopup()">Close</button>
                     </div>
                 </div>
             </div>
