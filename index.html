@@ -6,10 +6,18 @@
     <title>Wheel Power</title>
     <link rel="stylesheet" href="styles/style.css">
 </head>
-<body>
+<body onload="openTutorialPopup()">
+
+    <div class="tutorial-overlay" id="tutorialPopup">
+        <div class="tutorial-content">
+            <h2>Welcome to Wheel Power!</h2>
+            <p>Click the button to fill up the progress bar and repair your auto clickers as you progress through each level. Look out for minigames, or you might go down a level!</p>
+            <button onclick="closeTutorialPopup()">Got it!</button>
+        </div>
+    </div>
 
     <div class="game-container">
-        
+
         <div class="Manual-Click" id="Manual-Click">
             <h1>Wheel Power</h1>
             <button id="click-btn">Click Me!</button>

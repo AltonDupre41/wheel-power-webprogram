@@ -141,7 +141,7 @@ function minigame() {
             level = Math.max(0, level - 1);
             levelUp();
         }
-    }, 5000); //5 sec counter for minigame
+    }, 3000); //3 sec counter for minigame
 }
 
 //Gives random chance of minigame activating
@@ -229,4 +229,13 @@ function openPopup() {
 
 function closePopup() {
     popupDialog.style.visibility = popupDialog.style.visibility === "visible" ? "hidden" : "visible";
+}
+
+//needed separate open/close functions for the tutorial popup
+function openTutorialPopup() {
+    document.getElementById("tutorialPopup").style.display = "flex";
+}
+
+function closeTutorialPopup() {
+    document.getElementById("tutorialPopup").style.display = "none";
 }
