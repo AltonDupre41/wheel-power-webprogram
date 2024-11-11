@@ -3,6 +3,7 @@ const progressBar = document.getElementById('progress-bar');
 const clickCountDisplay = document.getElementById('click-count');
 const autoClickCountDisplay = document.getElementById('auto-click-count');
 const popupDialog = document.getElementById("popupDialog");
+const popupMessage = document.getElementById("popupMessage");
 const curLevel = document.getElementById("current-level");
 const manualContainer = document.getElementById("Manual-Click");
 
@@ -14,6 +15,8 @@ let autoClickMaxDurability = 10
 let clickCount = 0;
 let autoClickCount = 0;
 let maxClicks = 10;
+
+let minigameActive = false;
 
 let pauseUpdate = false;
 
@@ -99,6 +102,55 @@ function updateProgress() {
     }
 }
 
+//First minigame
+function minigame() {
+    if (minigameActive) return;
+    minigameActive = true;
+    ballsClicked = 0;
+    const minigamePopup = document.getElementById("minigamePopup");
+    minigamePopup.style.display = "flex";
+    const balls = []; //array of balls on the screen
+
+    //add balls to the screen
+    for (let i = 0; i < 5; i++) {
+        const ball = document.createElement("div");
+        ball.classList.add("minigame-ball");
+        ball.style.top = `${Math.random() * 80 + 10}%`;
+        ball.style.left = `${Math.random() * 80 + 10}%`;
+
+        //remove balls on click
+        ball.addEventListener("click", () => {
+            ball.remove();
+            ballsClicked++;
+            if (ballsClicked == 5) {
+                minigamePopup.style.display = "none";
+                minigameActive = false;
+                balls.forEach(b => b.remove()); //removes balls off screen
+            }
+        });
+        minigamePopup.appendChild(ball);
+        balls.push(ball);
+    }
+
+    //moves player down a level if they fail the minigame
+    setTimeout(() => {
+        if (ballsClicked < 5) {
+            minigamePopup.style.display = "none";
+            minigameActive = false;
+            balls.forEach(b => b.remove());
+            level = Math.max(0, level - 1);
+            levelUp();
+        }
+    }, 5000); //5 sec counter for minigame
+}
+
+//Gives random chance of minigame activating
+function checkForMinigame() {
+    if (Math.random() < 0.8) {
+        minigame();
+    }
+}
+
 function levelUp() {
     if (!(levels[level])){return;}
     let nodeList = document.querySelectorAll(levels[level]["elements"]);
@@ -115,7 +167,8 @@ function levelUp() {
     }
     if (manualContainer.style.width != '50%'){manualContainer.style.width = '50%';}
     curLevel.textContent = "Level " + level;
-    maxClicks = levels[level]["maxVal"]
+    maxClicks = levels[level]["maxVal"];
+    checkForMinigame();
 }
 
 function updateDurability(autoID){
