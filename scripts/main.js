@@ -6,15 +6,16 @@ const popupDialog = document.getElementById("popupDialog");
 const popupMessage = document.getElementById("popupMessage");
 const curLevel = document.getElementById("current-level");
 const manualContainer = document.getElementById("Manual-Click");
+const tutorialText = document.getElementById("tutorial-text")
+const tutorialTitle = document.getElementById("tutorial-content");
 
-let autoClickActive = false
-let autoClickBroken = false
-let autoClickDurability = 10
-let autoClickMaxDurability = 10
+let repair1Buttons = 0;
 
 let clickCount = 0;
 let autoClickCount = 0;
 let maxClicks = 10;
+
+let repairTutorial = true;
 
 let minigameActive = false;
 
@@ -147,7 +148,7 @@ function minigame() {
 //Gives random chance of minigame activating
 function checkForMinigame() {
     if (Math.random() < 0.8) {
-        minigame();
+        //minigame();
     }
 }
 
@@ -201,7 +202,13 @@ function AutoClick(autoID){
 
     updateProgress();
 
-    if (autoclicker["Durability"] <= 0){autoclicker["Broken"] = true}
+    if (autoclicker["Durability"] <= 0){
+        autoclicker["Broken"] = true
+        if (repairTutorial) {
+            openTutorialPopup("It looks like one of your autoclickers has broken down, it'lll continue to autoclick but at a slower rate. To repair, click on the repair button and preform a short minigame", "OH NO!");
+            repairTutorial = false;
+        }
+    }
 
     if (autoclicker["Broken"]){
         setTimeout(() => AutoClick(autoID), autoclicker["brokenUpdate"]);
@@ -221,11 +228,26 @@ function repair(autoID){
     let autoclicker = AutoClickDATA[autoID];
     autoclicker["Broken"] = false;
     autoclicker["Durability"] = autoclicker["MaxDurability"];
+    updateDurability(autoID)
 }
 
 //change repair button color from red to green with call so css pseduo function 'clicked'
 function repairButtonChangeColor(button){
     button.classList.toggle("clicked");
+    setTimeout(()=>checkRepair1Btns(button), 100)
+}
+
+function checkRepair1Btns(button){
+    if (button.classList.contains("clicked")) {
+        repair1Buttons++;
+    }
+    else {
+        repair1Buttons--;
+    }
+    if (repair1Buttons == 4) {
+        closeRepairPopup();
+        repair("Auto1");
+    }
 }
 
 //opens repair popup
@@ -238,8 +260,11 @@ function closeRepairPopup() {
     popupDialog.style.visibility = popupDialog.style.visibility === "visible" ? "hidden" : "visible";
 }
 
-//needed separate open/close functions for the tutorial popup
-function openTutorialPopup() {
+function openTutorialPopup(newString = "", titleString = "") {
+    if (newString.localeCompare("") != 0){
+        tutorialText.textContent = newString;
+        tutorialTitle.textContent = titleString;
+    }
     document.getElementById("tutorialPopup").style.display = "flex";
 }
 
