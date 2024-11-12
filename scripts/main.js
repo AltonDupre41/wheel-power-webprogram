@@ -142,13 +142,13 @@ function minigame() {
             level = Math.max(0, level - 1);
             levelUp();
         }
-    }, 3000); //3 sec counter for minigame
+    }, 5000); //5 sec counter for minigame
 }
 
 //Gives random chance of minigame activating
 function checkForMinigame() {
     if (Math.random() < 0.8) {
-        //minigame();
+        minigame();
     }
 }
 

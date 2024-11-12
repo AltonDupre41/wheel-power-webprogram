@@ -177,3 +177,26 @@ p {
     border-radius: 5px;
     cursor: pointer;
 }
+
+#Manual-Click {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.click-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.click-gif {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+#click-btn {
+    font-size: 18px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
