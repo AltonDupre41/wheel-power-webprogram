@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wheel Power</title>
     <link rel="stylesheet" href="styles/style.css">
+    <style>body {
+        background-image: url('images/game_background.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    </style>
 </head>
 <body onload="openTutorialPopup('')">
-
+    
     <div class="tutorial-overlay" id="tutorialPopup">
         <div class="tutorial-content">
-            <h2 id="tutorial-content">Welcome to Wheel Power!</h2>
-            <p id="tutorial-text">Click the button to fill up the progress bar and repair your auto clickers as you progress through each level.</p>
-            <button onclick="closeTutorialPopup()">Got it!</button>
+                <h2 id="tutorial-content">Welcome to Wheel Power!</h2>
+                <p id="tutorial-text">Click the button to fill up the progress bar and repair your auto clickers as you progress through each level.</p>
+                <button onclick="closeTutorialPopup()">Got it!</button>
+            </div>
         </div>
-    </div>
-
     <div class="game-container">
 
         <div class="Manual-Click" id="Manual-Click">
