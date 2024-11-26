@@ -200,3 +200,11 @@ p {
     padding: 10px 20px;
     cursor: pointer;
 }
+
+.level-background {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    z-index: -1; /* Ensure they appear behind other elements */
+    opacity: 0.8; /* Slight transparency for aesthetic effect */
+}

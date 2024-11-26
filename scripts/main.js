@@ -60,10 +60,12 @@ let levels = {
     1:{
         "elements":".level1",
         "maxVal":100,
+        "background": ["images/hamster.gif", "images/hamster.gif", "images/hamster.gif", "images/hamster.gif", "images/hamster.gif"]
     },
 
     2:{"elements":".level2",
         "maxVal":200,
+        "background": ["images/windmill.gif", "images/windmill.gif", "images/windmill.gif", "images/windmill.gif", "images/windmill.gif"]
     }
 };
 let level = 0;
@@ -169,6 +171,21 @@ function levelUp() {
     if (manualContainer.style.width != '50%'){manualContainer.style.width = '50%';}
     curLevel.textContent = "Level " + level;
     maxClicks = levels[level]["maxVal"];
+
+    const gameContainer = document.querySelector(".game-container");
+    levels[level].background.forEach((imgSrc) => {
+        const img = document.createElement("img");
+        img.src = imgSrc;
+        img.alt = "Level background";
+        img.classList.add("level-background");
+        
+        // Randomize placement for added visual interest
+        img.style.top = `${70 + Math.random() * 30}%`;
+        img.style.left = `${Math.random() * 90}%`;
+
+        gameContainer.appendChild(img);
+    });
+
     checkForMinigame();
 }
 
