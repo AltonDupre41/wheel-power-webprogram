@@ -144,6 +144,15 @@ p {
     transition: all 0.3s;
 }
 
+#screwMinigame {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    display:flex;
+    z-index: 10;
+    justify-content: center;
+}
+
 .tutorial-overlay {
     position: fixed;
     top: 0;

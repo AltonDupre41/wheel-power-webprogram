@@ -21,6 +21,8 @@ let minigameActive = false;
 
 let pauseUpdate = false;
 
+let postGameImages = ["images/hamster.gif", "images/hamster.gif", "images/windmill.gif", "images/windmill.gif",]
+
 
 //Database for AutoClickers
 //keyvalue pair where the key is the class of the autoclicker and the value includes data about the autoclicker
@@ -49,8 +51,34 @@ let AutoClickDATA = {
         "clickCount":0,
         "update":2000,
         "brokenUpdate":4000,
+    },
+    "Auto3":{
+        "Active":false,
+        "Broken":false,
+        "Durability":10,
+        "MaxDurability":10,
+        "DurabilityBar":document.getElementById("durability3"),
+        "AutoClickDisplay":document.getElementById("autocount3"),
+        "add":4,
+        "clickCount":0,
+        "update":4000,
+        "brokenUpdate":8000,
+    },
+    "Auto4":{
+        "Active":false,
+        "Broken":false,
+        "Durability":10,
+        "MaxDurability":10,
+        "DurabilityBar":document.getElementById("durability4"),
+        "AutoClickDisplay":document.getElementById("autocount4"),
+        "add":8,
+        "clickCount":0,
+        "update":8000,
+        "brokenUpdate":16000,
     }
+
 };
+
 
 
 //Levels in the program work with a key:value pair
@@ -59,14 +87,24 @@ let AutoClickDATA = {
 let levels = {
     1:{
         "elements":".level1",
-        "maxVal":100,
+        "maxVal":50,
         "background": ["images/hamster.gif", "images/hamster.gif", "images/hamster.gif", "images/hamster.gif", "images/hamster.gif"]
     },
 
     2:{"elements":".level2",
-        "maxVal":200,
+        "maxVal":100,
         "background": ["images/windmill.gif", "images/windmill.gif", "images/windmill.gif", "images/windmill.gif", "images/windmill.gif"]
-    }
+    },
+
+    3:{"elements":".level3",
+        "maxVal":200,
+        "background":[]
+    },
+
+    4:{"elements":".level4",
+        "maxVal":400,
+        "background":[]
+    },
 };
 let level = 0;
 
@@ -105,6 +143,27 @@ function updateProgress() {
     }
 }
 
+//Minigame Handler
+function minigameHandler(currentGame) {
+    switch (currentGame){
+        case "Auto1":
+            openRepairPopup();
+            break;
+        case "Auto2":
+            minigame();
+            break;
+        case "Auto3":
+            const screwMinigame = document.getElementById("screwMinigame");
+            screwMinigame.style.display = "flex";
+            setupScrews()
+            startScrews()
+            break;
+        case "Auto4":
+
+            break;
+    }
+}
+
 //First minigame
 function minigame() {
     if (minigameActive) return;
@@ -129,6 +188,7 @@ function minigame() {
                 minigamePopup.style.display = "none";
                 minigameActive = false;
                 balls.forEach(b => b.remove()); //removes balls off screen
+                repair("Auto2")
             }
         });
         minigamePopup.appendChild(ball);
@@ -141,24 +201,20 @@ function minigame() {
             minigamePopup.style.display = "none";
             minigameActive = false;
             balls.forEach(b => b.remove());
-            level = Math.max(0, level - 1);
-            levelUp();
         }
     }, 5000); //5 sec counter for minigame
 }
 
-//Gives random chance of minigame activating
-function checkForMinigame() {
-    if (Math.random() < 0.8) {
-        minigame();
-    }
-}
-
 function levelUp() {
-    if (!(levels[level])){return;}
-    let nodeList = document.querySelectorAll(levels[level]["elements"]);
-    let i;
-    for (i = 0; (nodeList.length != 0 && i != nodeList.length); i++){
+    if (!(levels[level])){ //once the player has unlocked everything, just make the number go up
+
+        
+        
+        }
+    else{
+        let nodeList = document.querySelectorAll(levels[level]["elements"]);
+        let i;
+        for (i = 0; (nodeList.length != 0 && i != nodeList.length); i++){
         let elementID = nodeList[i].id;
         nodeList[i].removeAttribute("hidden");
         
@@ -168,25 +224,44 @@ function levelUp() {
         }
         
     }
+
+    }
     if (manualContainer.style.width != '50%'){manualContainer.style.width = '50%';}
     curLevel.textContent = "Level " + level;
-    maxClicks = levels[level]["maxVal"];
+    if (!(levels[level])){maxClicks = maxlevel + (100*level) }
+    else{maxClicks = levels[level]["maxVal"];}
 
-    const gameContainer = document.querySelector(".game-container");
-    levels[level].background.forEach((imgSrc) => {
-        const img = document.createElement("img");
-        img.src = imgSrc;
-        img.alt = "Level background";
-        img.classList.add("level-background");
-        
-        // Randomize placement for added visual interest
-        img.style.top = `${70 + Math.random() * 30}%`;
-        img.style.left = `${Math.random() * 90}%`;
 
-        gameContainer.appendChild(img);
-    });
+    if(!(levels[level])) {
+        const gameContainer = document.querySelector(".game-container");
+        postGameImages.forEach((imgSrc) => {
+                const img = document.createElement("img");
+                img.src = imgSrc;
+                img.alt = "Level background";
+                img.classList.add("level-background");
+                
+                // Randomize placement for added visual interest
+                img.style.top = `${70 + Math.random() * 30}%`;
+                img.style.left = `${Math.random() * 90}%`;
 
-    checkForMinigame();
+                gameContainer.appendChild(img);
+            });
+        }
+    else{
+        const gameContainer = document.querySelector(".game-container");
+        levels[level].background.forEach((imgSrc) => {
+            const img = document.createElement("img");
+            img.src = imgSrc;
+            img.alt = "Level background";
+            img.classList.add("level-background");
+            
+            // Randomize placement for added visual interest
+            img.style.top = `${70 + Math.random() * 30}%`;
+            img.style.left = `${Math.random() * 90}%`;
+
+            gameContainer.appendChild(img);
+        });
+    }
 }
 
 function updateDurability(autoID){
@@ -263,6 +338,12 @@ function checkRepair1Btns(button){
     }
     if (repair1Buttons == 4) {
         closeRepairPopup();
+        let buttons = document.getElementsByClassName("repair-btn-change");
+        let buttons_size = buttons.length;
+        for (let i = 0; i < buttons_size; i++){
+            buttons[i].classList.toggle("clicked");
+            repair1Buttons--;
+        }
         repair("Auto1");
     }
 }
@@ -288,3 +369,9 @@ function openTutorialPopup(newString = "", titleString = "") {
 function closeTutorialPopup() {
     document.getElementById("tutorialPopup").style.display = "none";
 }
+
+function screwWin(){
+    repair("Auto3");
+    const screwMinigame = document.getElementById("screwMinigame");
+    screwMinigame.style.display = "none";
+  } 

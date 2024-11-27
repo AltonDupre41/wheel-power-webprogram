@@ -41,7 +41,7 @@
                 <div class="Auto1 durability" id="durability1"></div>
                 
                 <div class="repair-popup Auto1">
-                    <button onclick="openRepairPopup()">Repair</button>
+                    <button onclick="minigameHandler('Auto1')">Repair</button>
                     <div id="popupDialog">
                         <p>Click each Button to Green to Repair Auto Clicker!</p>
                             <div class="repair-btns">
@@ -61,7 +61,35 @@
                 <div class="Auto2 durability" id="durability2"></div>
 
                 <div class="repair-popup Auto2">
-                    <button onclick="openPopup()">Repair</button>
+                    <button id="repair2" onclick="minigameHandler('Auto2')">Repair</button>
+                    <div id="popupDialog">
+                        <p>Repair Button Info</p>
+                        <button onclick="closePopup()">Close</button>
+                    </div>
+                </div>
+            </div>
+
+            <div hidden class="Auto level3" id="Auto3">
+                <p class="Auto3">Auto Clicker 3</p>
+                <p  class="Auto3 auto-clicker-count">Auto Clicks: <span id="autocount3">0</span></p>
+                <div class="Auto3 durability" id="durability3"></div>
+
+                <div class="repair-popup Auto3">
+                    <button id="repair3" onclick="minigameHandler('Auto3')">Repair</button>
+                    <div id="popupDialog">
+                        <p>Repair Button Info</p>
+                        <button onclick="closePopup()">Close</button>
+                    </div>
+                </div>
+            </div>
+
+            <div hidden class="Auto level4" id="Auto4">
+                <p class="Auto4">Auto Clicker 4</p>
+                <p  class="Auto4 auto-clicker-count">Auto Clicks: <span id="autocount4">0</span></p>
+                <div class="Auto4 durability" id="durability3"></div>
+
+                <div class="repair-popup Auto4">
+                    <button id="repair4" onclick="minigameHandler('Auto4')">Repair</button>
                     <div id="popupDialog">
                         <p>Repair Button Info</p>
                         <button onclick="closePopup()">Close</button>
@@ -83,6 +111,24 @@
 
     <div id="minigamePopup" class="popup">
         <p id="popupMessage">Click all the balls in time</p>
+    </div>
+
+    <div id="screwMinigame" class="popup">
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+            <title>Sketch</title>
+        
+            <link rel="stylesheet" type="text/css" href="scripts\ScrewMinigame\style.css">
+        
+            <script src="scripts\ScrewMinigame\libraries\p5.min.js"></script>
+            <script src="scripts\ScrewMinigame\libraries\p5.sound.min.js"></script>
+          </head>
+        
+          <body>
+            <script src="scripts\ScrewMinigame\sketch.js"></script>
+          </body>
     </div>
 
     <script src="scripts/main.js"></script>

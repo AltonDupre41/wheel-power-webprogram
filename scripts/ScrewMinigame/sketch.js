@@ -8,8 +8,11 @@ let gameWon = false;
 let gameLost = false;
 let winDelay = 60; // Frames to wait after winning for particles to dissipate
 
-function setup() {
+function setupScrews() {
   createCanvas(400, 400);
+  gameWon = false;
+  gameLost = false;
+  timer = 15;
 
   // Adjust screw placement to align above decorative bolts
   let sheetX = 50;
@@ -23,13 +26,17 @@ function setup() {
     { x: sheetX + 20, y: sheetY + sheetHeight - 20, depth: 0, completed: false }, // Bottom-left
     { x: sheetX + sheetWidth - 20, y: sheetY + sheetHeight - 20, depth: 0, completed: false }, // Bottom-right
   ];
+}
 
+  function startScrews(){
+  loop()
   // Timer setup
   setInterval(() => {
     if (!gameWon && !gameLost) {
       timer--;
       if (timer <= 0) {
         gameLost = true;
+        clearInterval(refreshIntervalId);
         noLoop();
       }
     }
@@ -55,10 +62,19 @@ function draw() {
   textSize(16);
   if (gameLost) {
     drawCenteredText("Failure", color(255, 0, 0));
+    if (document.getElementById("defaultCanvas0") != null){
+      const temp_canvas = document.getElementById("defaultCanvas0");
+      temp_canvas.remove()
+    }
   } else if (gameWon) {
     winDelay--;
     if (winDelay <= 0) noLoop();
     drawCenteredText("Success!", color(0, 200, 0), true); // Success with outline
+    screwWin();
+    if (document.getElementById("defaultCanvas0") != null){
+      const temp_canvas = document.getElementById("defaultCanvas0");
+      temp_canvas.remove()
+    }
   } else {
     noStroke();
     text(`Time: ${timer}s`, 10, height - 50);
