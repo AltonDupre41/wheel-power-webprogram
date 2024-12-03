@@ -226,3 +226,15 @@ p {
     z-index: -1; /* Ensure they appear behind other elements */
     opacity: 0.8; /* Slight transparency for aesthetic effect */
 }
+
+.upgrade-container {
+    display:flex;
+    align-items: left;
+    margin: 0 auto;
+    width: 80%;
+    height:10%
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

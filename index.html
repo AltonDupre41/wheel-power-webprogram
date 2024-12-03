@@ -22,6 +22,18 @@
                 <button onclick="closeTutorialPopup()">Got it!</button>
             </div>
         </div>
+    </div>
+    <div class="upgrade-container">
+        <h2 hidden id="upgrade-header">Upgrades | Upgrade Points: 0</h2>
+        <button id = "manPower1" class="upgrade-button" onclick = "upgrade('manPower1',2,2)" hidden>Manual power</button>
+        <button id = "manPower2" class="upgrade-button" onclick = "upgrade('manPower2',2,4)" hidden>Super Manual power</button>
+        <button id = "autoPower1" class="upgrade-button" onclick = "upgrade('autoPower1',3,3,'Auto1')" hidden>Auto 1 power</button>
+        <button id = "autoPower2" class="upgrade-button" onclick = "upgrade('autoPower2',3,4,'Auto2')" hidden>Auto 2 power</button>
+        <button id = "autoDura1" class="upgrade-button" onclick = "upgrade('autoDura1',1,30,'Auto1')" hidden>Auto 1 Durability</button>
+        <button id = "autoDura2" class="upgrade-button" onclick = "upgrade('autoDura2',1,30,'Auto1')" hidden>Auto 2 Durability</button>
+
+    </div>
+    
     <div class="game-container">
 
         <div class="Manual-Click" id="Manual-Click">

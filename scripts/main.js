@@ -10,6 +10,8 @@ const tutorialText = document.getElementById("tutorial-text")
 const tutorialTitle = document.getElementById("tutorial-content");
 
 let repair1Buttons = 0;
+let clickPower = 1;
+let upgradePoints = -1;
 
 let clickCount = 0;
 let autoClickCount = 0;
@@ -80,7 +82,6 @@ let AutoClickDATA = {
 };
 
 
-
 //Levels in the program work with a key:value pair
 //keys dignify how far the player has progressed(how many times the progression bar is filled)
 //values are what elements are enabled when the player reaches that level and the max power needed for the next level
@@ -93,17 +94,20 @@ let levels = {
 
     2:{"elements":".level2",
         "maxVal":100,
-        "background": ["images/windmill.gif", "images/windmill.gif", "images/windmill.gif", "images/windmill.gif", "images/windmill.gif"]
+        "background": ["images/windmill.gif", "images/windmill.gif", "images/windmill.gif", "images/windmill.gif", "images/windmill.gif"],
+        "upgrades":[document.getElementById("manPower1"),document.getElementById("autoDura1"),]
     },
 
     3:{"elements":".level3",
         "maxVal":200,
-        "background":[]
+        "background":[],
+        "upgrades":[document.getElementById("manPower2"),document.getElementById("autoPower1"),]
     },
 
     4:{"elements":".level4",
         "maxVal":400,
-        "background":[]
+        "background":[],
+        "upgrades":[document.getElementById("autoPower2"),document.getElementById("autoDura2"),]
     },
 };
 let level = 0;
@@ -136,6 +140,7 @@ function updateProgress() {
         setTimeout(() => {
 
             level++;
+            upgradePoints++;
             levelUp();
 
             clickCount = 0;
@@ -216,9 +221,6 @@ function minigame() {
 
 function levelUp() {
     if (!(levels[level])){ //once the player has unlocked everything, just make the number go up
-
-        
-        
         }
     else{
         let nodeList = document.querySelectorAll(levels[level]["elements"]);
@@ -271,6 +273,15 @@ function levelUp() {
             gameContainer.appendChild(img);
         });
     }
+
+    if (levels[level]["upgrades"]){
+        let upgradeHeader = document.getElementById('upgrade-header')
+        for (i = 0; i < 2; i++){
+            levels[level]["upgrades"][i].removeAttribute("hidden");
+        }
+       if (upgradeHeader.hasAttribute("hidden")) {upgradeHeader.removeAttribute("hidden");}
+       upgradeHeader.textContent = "Upgrades | Upgrade Points: " + upgradePoints;
+    }
 }
 
 function updateDurability(autoID){
@@ -289,7 +300,7 @@ function updateDurability(autoID){
 
 //manual click function
 clickButton.addEventListener('click', () => {
-    clickCount++;
+    clickCount += clickPower;
     clickCountDisplay.textContent = clickCount;
     updateProgress();
 });
@@ -389,4 +400,24 @@ function wiresWin(){
     repair("Auto4");
     const wiresMinigame = document.getElementById("wiresMinigame");
     wiresMinigame.style.display = "none";
+}
+
+//type: 1 - upgrade durability, 2 - upgrade click power, 3 - upgrade autoclick power
+function upgrade(name, type, amt, auto = ""){
+    if (upgradePoints <= 0) {return;}
+    let upgradeButton = document.getElementById(name)
+    upgradePoints--;
+    switch (type){
+    case 1: 
+        AutoClickDATA[auto]["MaxDurability"] = amt;
+        break;
+    case 2: 
+        clickPower = amt;
+        break;
+    case 3:
+        AutoClickDATA[auto]["add"] = amt;
+        break;
+    }
+    upgradeButton.setAttribute("hidden",'');
+    document.getElementById('upgrade-header').textContent = "Upgrades | Upgrade Points: " + upgradePoints;
 }
