@@ -8,10 +8,16 @@ let gameWon = false;
 let gameLost = false;
 let winDelay = 60; // Frames to wait after winning for particles to dissipate
 
+let screwElement;
+let screwActive = false;
+
 function setupScrews() {
   createCanvas(400, 400);
+  screwElement = document.getElementById("defaultCanvas0");
+  screwElement.style.visibility = "visible";
   gameWon = false;
   gameLost = false;
+  screwActive = true;
   timer = 15;
 
   // Adjust screw placement to align above decorative bolts
@@ -29,21 +35,27 @@ function setupScrews() {
 }
 
   function startScrews(){
-  loop()
+  loop();
   // Timer setup
-  setInterval(() => {
+  let refreshIntervalId = setInterval(() => {
     if (!gameWon && !gameLost) {
       timer--;
       if (timer <= 0) {
         gameLost = true;
         clearInterval(refreshIntervalId);
         noLoop();
+        screwActive = false;
       }
     }
   }, 1000);
 }
 
 function draw() {
+  if (screwActive == false && wireActive == true){
+    drawWire();
+    return;
+  }
+  else if (screwActive == false){return;}
   background(50); // Dark gray background
 
   // Draw the background (sheet metal and machine details)
@@ -62,19 +74,15 @@ function draw() {
   textSize(16);
   if (gameLost) {
     drawCenteredText("Failure", color(255, 0, 0));
-    if (document.getElementById("defaultCanvas0") != null){
-      const temp_canvas = document.getElementById("defaultCanvas0");
-      temp_canvas.remove()
-    }
+    if (screwElement != null) {screwElement.remove()}
+    screwActive = false
   } else if (gameWon) {
     winDelay--;
     if (winDelay <= 0) noLoop();
+    screwActive = false;
     drawCenteredText("Success!", color(0, 200, 0), true); // Success with outline
     screwWin();
-    if (document.getElementById("defaultCanvas0") != null){
-      const temp_canvas = document.getElementById("defaultCanvas0");
-      temp_canvas.remove()
-    }
+    if (screwElement != null) {screwElement.remove()}
   } else {
     noStroke();
     text(`Time: ${timer}s`, 10, height - 50);
@@ -86,6 +94,11 @@ function draw() {
 }
 
 function mousePressed() {
+  if (screwActive == false && wireActive == true){
+    wiremousePressed();
+    return;
+  }
+  else if (screwActive == false){return;}
   if (gameWon || gameLost) return;
 
   // Check if a screw is clicked

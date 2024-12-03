@@ -5,26 +5,33 @@ let wires = [];
 let draggingWire = null;
 let offsetX = 0;
 let offsetY = 0;
-let timer = 15; // 15 seconds timer
+let wire = 15; // 15 seconds wire
 let timerStart = 0;
 let gameOver = false;
 let winCondition = false;
-let timerRunning = true; // Flag to indicate if the timer should continue running
+let timerRunning = true; // Flag to indicate if the wire should continue running
 
-function setup() {
+let wireElement
+let wireActive = false;
+
+function startWires() {
   createCanvas(400, 400);
-  resetGame();
-  timerStart = millis(); // Initialize the start time of the timer
+  wireElement = document.getElementById("defaultCanvas0");
+  wireElement.style.visibility = "visible";
+  resetWires();
+  wireActive = true;
+  loop()
+  timerStart = millis(); // Initialize the start time of the wire
 }
 
-function resetGame() {
+function resetWires() {
   leftNodes = [];
   rightNodes = [];
   wires = [];
   draggingWire = null;
   gameOver = false;
   winCondition = false;
-  timerRunning = true; // Reset the timer to run
+  timerRunning = true; // Reset the wire to run
 
   // Generate positions for left nodes and shuffle colors
   let shuffledColors = shuffleArray([...wireColors]);
@@ -54,16 +61,17 @@ function resetGame() {
   }
 }
 
-function draw() {
+function drawWire() {
+  if (wireActive == false){return;}
   if (timerRunning) {
     let elapsedTime = (millis() - timerStart) / 1000;
-    timer = Math.max(0, 15 - elapsedTime); // Ensure timer doesn't go below 0
+    wire = Math.max(0, 15 - elapsedTime); // Ensure wire doesn't go below 0
 
-    if (timer <= 0 && !gameOver) {
+    if (wire <= 0 && !gameOver) {
       if (!winCondition) {
-        gameOver = true; // End the game if the timer reaches 0 and win condition isn't met
+        gameOver = true; // End the game if the wire reaches 0 and win condition isn't met
       }
-      timerRunning = false; // Stop the timer after it runs out
+      timerRunning = false; // Stop the wire after it runs out
     }
   }
 
@@ -82,13 +90,13 @@ function draw() {
     rect(400, 0, 10, 10);
     rect(400, 400, 10, 10);
 
-    // Display the timer at the top left corner if the game isn't over
+    // Display the wire at the top left corner if the game isn't over
     fill(255);
     textAlign(LEFT, TOP);
     textSize(16);
     stroke('black');
     strokeWeight(2);
-    text(`Time: ${Math.ceil(timer)}s`, 160, 30);
+    text(`Time: ${Math.ceil(wire)}s`, 160, 30);
 
     //Directions text
     text(`Connect the left nodes to the right nodes!`, 55, 350);
@@ -124,9 +132,12 @@ function draw() {
       text('Success!', width / 2, height / 2);
       winCondition = true; // Mark the game as won
       gameOver = true; // End the game when successful
-      timerRunning = false; // Stop the timer when success is achieved
+      timerRunning = false; // Stop the wire when success is achieved
     }
   } else {
+    noLoop();
+    wireActive = false;
+
     // If the game is over and it is a failure, display "Failure"
     if (!winCondition) {
       fill(255, 0, 0);
@@ -134,7 +145,16 @@ function draw() {
       textSize(32);
       stroke('black');
       text('Failure', width / 2, height / 2);
+      
     }
+    else{
+      wiresWin();
+    }
+    wireElement = document.getElementById("defaultCanvas0");
+    wireElement.style.visibility = "hidden";
+    if (wireElement != null) {wireElement.remove()}
+    
+    
   }
 }
 
@@ -191,7 +211,7 @@ function drawCircuitBoardBackground() {
   }
 }
 
-function mousePressed() {
+function wiremousePressed() {
   for (let wire of wires) {
     if (!wire.connected) {
       let d = dist(mouseX, mouseY, wire.endX, wire.endY);

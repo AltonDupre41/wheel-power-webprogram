@@ -73,7 +73,7 @@ let AutoClickDATA = {
         "AutoClickDisplay":document.getElementById("autocount4"),
         "add":8,
         "clickCount":0,
-        "update":8000,
+        "update": 4000,
         "brokenUpdate":16000,
     }
 
@@ -108,6 +108,13 @@ let levels = {
 };
 let level = 0;
 
+
+function setup() {
+    if (document.getElementById("defaultCanvas0") != null){
+      const temp_canvas = document.getElementById("defaultCanvas0");
+      temp_canvas.remove()
+    }
+  }
 
 function updateProgress() {    
     if (pauseUpdate){return;}
@@ -159,7 +166,9 @@ function minigameHandler(currentGame) {
             startScrews()
             break;
         case "Auto4":
-
+            const wiresMinigame = document.getElementById("wiresMinigame");
+            wiresMinigame.style.display = "flex";
+            startWires()
             break;
     }
 }
@@ -228,7 +237,7 @@ function levelUp() {
     }
     if (manualContainer.style.width != '50%'){manualContainer.style.width = '50%';}
     curLevel.textContent = "Level " + level;
-    if (!(levels[level])){maxClicks = maxlevel + (100*level) }
+    if (!(levels[level])){maxClicks = maxClicks + (100*level) }
     else{maxClicks = levels[level]["maxVal"];}
 
 
@@ -375,3 +384,9 @@ function screwWin(){
     const screwMinigame = document.getElementById("screwMinigame");
     screwMinigame.style.display = "none";
   } 
+
+function wiresWin(){
+    repair("Auto4");
+    const wiresMinigame = document.getElementById("wiresMinigame");
+    wiresMinigame.style.display = "none";
+}
