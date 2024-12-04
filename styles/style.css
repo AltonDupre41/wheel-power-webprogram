@@ -228,7 +228,7 @@ p {
 }
 
 .upgrade-container {
-    display: flex;
+    display: none;
     align-items: left;
     margin: 0 auto;
     width: 80%;

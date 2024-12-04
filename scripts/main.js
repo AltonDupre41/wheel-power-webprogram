@@ -279,7 +279,10 @@ function levelUp() {
         for (i = 0; i < 2; i++){
             levels[level]["upgrades"][i].removeAttribute("hidden");
         }
-       if (upgradeHeader.hasAttribute("hidden")) {upgradeHeader.removeAttribute("hidden");}
+       if (upgradeHeader.hasAttribute("hidden")) {
+        upgradeHeader.removeAttribute("hidden");
+        document.getElementById("upgrade-con").style.display = "flex";
+    }
        upgradeHeader.textContent = "Upgrades | Upgrade Points: " + upgradePoints;
     }
 }
