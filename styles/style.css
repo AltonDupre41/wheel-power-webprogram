@@ -228,13 +228,19 @@ p {
 }
 
 .upgrade-container {
-    display:flex;
+    display: flex;
     align-items: left;
     margin: 0 auto;
     width: 80%;
-    height:10%
+    height: 10%;
     padding: 20px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.upgrade-button {
+    
+    align-items: center;
+    padding: 15px;
 }
