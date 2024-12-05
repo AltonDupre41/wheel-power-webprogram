@@ -100,13 +100,13 @@ let levels = {
 
     3:{"elements":".level3",
         "maxVal":200,
-        "background":[],
+        "background":["images/solar_panel.gif", "images/solar_panel.gif", "images/solar_panel.gif", "images/solar_panel.gif", "images/solar_panel.gif"],
         "upgrades":[document.getElementById("manPower2"),document.getElementById("autoPower1"),]
     },
 
     4:{"elements":".level4",
         "maxVal":400,
-        "background":[],
+        "background":["images/power_plant.gif", "images/power_plant.gif", "images/power_plant.gif", "images/power_plant.gif", "images/power_plant.gif"],
         "upgrades":[document.getElementById("autoPower2"),document.getElementById("autoDura2"),]
     },
 };
