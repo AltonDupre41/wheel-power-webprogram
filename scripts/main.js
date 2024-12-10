@@ -132,7 +132,7 @@ function updateProgress() {
     //change progress bar colors
     const red = Math.max(255 - (progress * 2.55), 0);
     const green = Math.min(progress * 2.55, 255);
-    progressBar.style.backgroundColor = `rgb(${red}, ${green}, 0)`;
+    progressBar.style.backgroundColor = `rgb(${red}, #4c54af, 0)`;
 
     //reset progress bar after it fills
     if (totalClicks >= maxClicks) {
@@ -274,7 +274,7 @@ function levelUp() {
         });
     }
 
-    if (levels[level]["upgrades"]){
+    if (levels[level] && levels[level]["upgrades"]){
         let upgradeHeader = document.getElementById('upgrade-header')
         for (i = 0; i < 2; i++){
             levels[level]["upgrades"][i].removeAttribute("hidden");
@@ -460,7 +460,6 @@ function loadProgress() {
 
     if (savedState) {
         const gameState = JSON.parse(savedState);
-        level = gameState.level;
         clickCount = gameState.clickCount;
         autoClickCount = gameState.autoClickCount;
         maxClicks = gameState.maxClicks;
@@ -484,27 +483,21 @@ function loadProgress() {
         //     }
         // }
 
-        for (const key in AutoClickDATA) {
-            if (AutoClickDATA[key].Active) {
-                setTimeout(() => AutoClick(key), AutoClickDATA[key].update);
-            }
-        }
-        
-        document.getElementById("click-count").textContent = clickCount;
-        curLevel.textContent = "Level " + level;
+        // for (const key in AutoClickDATA) {
+        //     if (AutoClickDATA[key].Active) {
+        //         setTimeout(() => AutoClick(key), AutoClickDATA[key].update);
+        //     }
+        // }
 
         const gameContainer = document.querySelector(".game-container");
-        for (let i = 1; i <= level; i++) {
-        levels[i].background.forEach((imgSrc) => {
-            const img = document.createElement("img");
-            img.src = imgSrc;
-            img.alt = `Background for Level ${i}`;
-            img.classList.add("level-background");
-            img.style.top = `${70 + Math.random() * 30}%`;
-            img.style.left = `${Math.random() * 90}%`;
-            gameContainer.appendChild(img);
-        });
+        for (let i = 1; i <= gameState.level; i++) {
+            level++;
+            levelUp();
+            
         }
+
+        document.getElementById("click-count").textContent = clickCount;
+        curLevel.textContent = "Level " + level;
 
         clickCountDisplay.textContent = clickCount;
         progressBar.style.width = `${(clickCount + autoClickCount) / maxClicks * 100}%`;

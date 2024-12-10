@@ -56,7 +56,7 @@ button {
     font-size: 18px;
     margin-top: 20px;
     cursor: pointer;
-    background-color: #4CAF50;
+    background-color: #4c54af;
     color: white;
     border: none;
     border-radius: 5px;
@@ -74,7 +74,7 @@ button {
 }
 
 .repair-btn-change.clicked {
-    background-color: #4CAF50;
+    background-color: #4c54af;
 }
 
 .progress-bar {
@@ -91,7 +91,7 @@ button {
 .durability {
     position: bottom;
     height: 15px;
-    background-color: #4CAF50;
+    background-color: #4c54af;
     width: 20;
     transition: width 0.3s ease;
     z-index: 1000;
@@ -189,7 +189,7 @@ p {
     margin-top: 15px;
     padding: 10px 20px;
     font-size: 1rem;
-    background-color: #4CAF50;
+    background-color: #4c54af;
     color: white;
     border: none;
     border-radius: 5px;
