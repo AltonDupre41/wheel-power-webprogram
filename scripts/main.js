@@ -266,7 +266,7 @@ function levelUp() {
             img.alt = "Level background";
             img.classList.add("level-background");
             
-            // Randomize placement for added visual interest
+            //randomize image
             img.style.top = `${70 + Math.random() * 30}%`;
             img.style.left = `${Math.random() * 90}%`;
 
@@ -285,6 +285,7 @@ function levelUp() {
     }
        upgradeHeader.textContent = "Upgrades | Upgrade Points: " + upgradePoints;
     }
+    saveProgress(); //progress is saved everytime user goes up a level
 }
 
 function updateDurability(autoID){
@@ -424,3 +425,90 @@ function upgrade(name, type, amt, auto = ""){
     upgradeButton.setAttribute("hidden",'');
     document.getElementById('upgrade-header').textContent = "Upgrades | Upgrade Points: " + upgradePoints;
 }
+
+//stores progress in local memory
+function saveProgress() {
+    const gameState = {
+        level: level,
+        clickCount: clickCount,
+        autoClickCount: autoClickCount,
+        maxClicks: maxClicks,
+        upgradePoints: upgradePoints,
+        autoClickers: {},
+    };
+
+    for (const [key, data] of Object.entries(AutoClickDATA)) {
+        gameState.autoClickers[key] = {
+            Active: data.Active,
+            Broken: data.Broken,
+            Durability: data.Durability,
+            MaxDurability: data.MaxDurability,
+            add: data.add,
+            clickCount: data.clickCount,
+        };
+    }
+
+    //convert the game state object to a JSON string and save it to localStorage
+    localStorage.setItem('gameProgress', JSON.stringify(gameState));
+    console.log("Progress saved");
+}
+
+
+//resume game from where user left off
+function loadProgress() {
+    const savedState = localStorage.getItem('gameProgress');
+
+    if (savedState) {
+        const gameState = JSON.parse(savedState);
+        level = gameState.level;
+        clickCount = gameState.clickCount;
+        autoClickCount = gameState.autoClickCount;
+        maxClicks = gameState.maxClicks;
+        upgradePoints = gameState.upgradePoints;
+
+        //attempt at getting auto clickers to load
+        // if (gameState.autoClickers) {
+        //     for (const [key, savedData] of Object.entries(gameState.autoClickers)) {
+        //         if (AutoClickDATA[key]) {
+        //             AutoClickDATA[key].Active = savedData.Active;
+        //             AutoClickDATA[key].Broken = savedData.Broken;
+        //             AutoClickDATA[key].Durability = savedData.Durability;
+        //             AutoClickDATA[key].MaxDurability = savedData.MaxDurability;
+        //             AutoClickDATA[key].add = savedData.add;
+        //             AutoClickDATA[key].clickCount = savedData.clickCount;
+
+        //             // Update UI elements if necessary
+        //             AutoClickDATA[key].DurabilityBar.style.width = `${(savedData.Durability / savedData.MaxDurability) * 100}%`;
+        //             AutoClickDATA[key].AutoClickDisplay.textContent = savedData.clickCount;
+        //         }
+        //     }
+        // }
+
+        for (const key in AutoClickDATA) {
+            if (AutoClickDATA[key].Active) {
+                setTimeout(() => AutoClick(key), AutoClickDATA[key].update);
+            }
+        }
+        
+        document.getElementById("click-count").textContent = clickCount;
+        curLevel.textContent = "Level " + level;
+
+        const gameContainer = document.querySelector(".game-container");
+        for (let i = 1; i <= level; i++) {
+        levels[i].background.forEach((imgSrc) => {
+            const img = document.createElement("img");
+            img.src = imgSrc;
+            img.alt = `Background for Level ${i}`;
+            img.classList.add("level-background");
+            img.style.top = `${70 + Math.random() * 30}%`;
+            img.style.left = `${Math.random() * 90}%`;
+            gameContainer.appendChild(img);
+        });
+        }
+
+        clickCountDisplay.textContent = clickCount;
+        progressBar.style.width = `${(clickCount + autoClickCount) / maxClicks * 100}%`;
+    } else {
+        console.log("No saved progress found.");
+    }
+} 
